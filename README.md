@@ -1,0 +1,21 @@
+# altura-labs
+
+PREMESSA
+Analizzando i dati mi sono venute in mente una molteplicità di strade per appocciare il problema
+Esempio:
+Nel dataset “annuario” compare per 2 volte il soggetto “Grilli Bruno”, come anche “Cendret Luciano”. A ciascuno corrisponde un numero di telefono differente, come anche un diverso indirizzo. Di fronte a tale situazione mi si sono aperti diversi plausibili scenari:
+1)	Si tratterà di due professionisti omonimi?
+2)	Si tratterà dello stesso professionista che, poiché ha cambiato studio, ergo indirizzo e numero di telefono (trattandosi di un fisso il trasferimento potrebbe implicare la perdita del numero originale), è stato registrato nel database sia nella precedente località, sia nell’attuale?
+3)	O ancora, sarà lo stesso professionista che ha aperto 2 studi in due diverse località della città di Roma?
+per procedere all’analisi dei dati, avrei dovuto seguire una delle varie ipotesi, per poi riuscire ad automatizzare l’analisi in modo sistematico con python.
+Tuttavia, non potendo trarne una conclusione certa, ho deciso di limitarmi (soluzione assolutamente discutibile) ad inserire tutte quelle osservazioni, che compaiono una sola volta, in un dataset A, mentre in un dataset B tutte le osservazioni duplici, o che comunque presentano elementi in comune tra di loro.
+In alternativa si sarebbe potuto procedere ad una deduplicazione anagrafica più radicale, tenendo tuttavia prensente la possibilità di perdere informazioni rileventi (come la cancellazione di un professionista del dataset).
+Il criterio che ho seguito per distinguere i professionisti è stato in primis il nome per tutti e quattro i datasets. A seguire anche il link del datasets “my_business”, dando per scontato che ogni link appartenga ad un solo professionista. Inizialmente ho anche valutato di usare altre “features” (come l’indirizzo) per eseguire la deduplicazione anagrafica, scelta successivamente scartata, essendoci la possibilità che 2 o più distinti professionisti abbiano la sede all’interno dello stesso edificio.
+
+Sviluppo modello per classificazione (ranking)
+Anche in questo caso, ho avanzato un’ interpretazione, ovvero utilizzare i dati disponibili per “allenare” un algoritmo che generi una classificazione (ranking) tra i professionisti.
+Nei datasets “mio_dottore” e “my_business” sono presenti 2 colonne -rispettivamente (review_miodottore e score_miodottore) in mio_dottore (rating_mybusiness e reviews_mybusiness) in my_business- significative a questo scopo. Se rating_mybusiness rappresenta il feedback lasciato dai clienti, e reviews_mybusiness il numero di reviews lasciate, si ha un punto di partenza per costruire un algoritmo di classificazione. Rimane da valutare il criterio che si vorrà utilizzare per determinare il ranking finale. Si potrebbe dare al rating_mybusiness un valore proporzionale al suo valore assoluto; mentre per quanto riguarda reviews_mybusiness il criterio è più discutibile. Tendenzialmente maggiore il numero di reviews maggiore sarà il livello di confidenza delle persone. Tuttavia è opportuno domandarsi se tali dati veramente rappresentino la realtà dei fatti. I ratings potrebbero essere stati lasciati da amici e parenti, e questo potrebbe aver contribuito a migliorare il rating di un professionista.
+Consideriamo invece il caso in cui un professionista abbia di recente aperto la propria attività. È lecito pensare che abbia un limitato numero di ratings, ma potrebbe essere ugualmente competente quanto uno che ha un rating molto elevato.
+Inoltre, osservando il valore assoluto dei dati in reviews_mybusiness e in review_miodottore, si tratta, per la maggiorparte, di valori alquanto bassi da non avere molta significanza statistica. Il feedback lasciato dai clienti sicuramente è stato influenzato dal mood del cliente nel giorno in cui è stato rilasciato. Tutte queste informazioni ci porterebbero a pensare che non abbiamo una buona base per costruire un modello valido, ovvero che realmente rappresenti la realtà.
+OSSERVAZIONI
+Si noti che le osservazioni contenute nei datasets sono concentrate nella città di Roma, mentre per quanto concerne l’Anagrafica ricavata attraverso query effettuate via API dal servizio Maps / Mybusiness Google si hanno la maggiorparte delle osservazioni concentrate su Roma, ma una buona parte ripartite sul territorio nazionale
